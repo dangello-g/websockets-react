@@ -36,7 +36,7 @@ function App() {
     };
 
     ws.onmessage = (event) => {
-      console.log("Data received from temperature and CO2 level:", event.data);
+      console.log("Data received from temperature and CO2 level");
       const data: SensorProps[] = JSON.parse(event.data);
 
       data.forEach((sensor) => {
