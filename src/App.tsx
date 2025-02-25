@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import TemperatureSensor from './components/TemperatureSensor'
 import CO2Sensor from './components/CO2Sensor'
@@ -13,11 +13,12 @@ export interface SensorProps {
   timestamp: string
 }
 
-const TempAndCO2WebSocketURL = "ws://localhost:8080/ws/sensor";
-const HumidityAndLightWebSocketURL = "ws://localhost:8083/ws";
+const TempAndCO2WebSocketURL = "wss://java-sensor-microservice.onrender.com/ws/sensor";
+const HumidityAndLightWebSocketURL = "wss://go-sensor-microservice-production.up.railway.app/ws";
 
 function App() {
-  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const tempCO2SocketRef = useRef<WebSocket | null>(null);
+  const humidityLightSocketRef = useRef<WebSocket | null>(null);
   const [temperature, setTemperature] = useState<SensorProps>({
     type: "temperature",
     value: 0,
@@ -44,6 +45,10 @@ function App() {
   })
 
   const temperatureAndCO2Data = () => {
+    if (tempCO2SocketRef.current !== null) {
+      tempCO2SocketRef.current.close();
+    }
+
     const ws = new WebSocket(TempAndCO2WebSocketURL);
 
     ws.onopen = () => {
@@ -69,13 +74,17 @@ function App() {
 
     ws.onclose = () => {
       console.log("Connection with temperature and CO2 level WebSocket closed");
-      setSocket(null);
+      tempCO2SocketRef.current = null;
     };
 
-    setSocket(ws);
+    tempCO2SocketRef.current = ws;
   };
 
   const humidityAndLightData = () => {
+    if (humidityLightSocketRef.current !== null) {
+      humidityLightSocketRef.current.close();
+    }
+
     const ws = new WebSocket(HumidityAndLightWebSocketURL);
 
     ws.onopen = () => {
@@ -101,15 +110,20 @@ function App() {
 
     ws.onclose = () => {
       console.log("Connection with humidity and light intensity WebSocket closed");
-      setSocket(null);
+      humidityLightSocketRef.current = null;
     };
 
-    setSocket(ws);
+    humidityLightSocketRef.current = ws;
   };
 
   useEffect(() => {
     temperatureAndCO2Data();
     humidityAndLightData();
+
+    return () => {
+      if (tempCO2SocketRef.current !== null) tempCO2SocketRef.current.close();
+      if (humidityLightSocketRef.current !== null) humidityLightSocketRef.current.close();
+    };
   }, [])
 
   return (
