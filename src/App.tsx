@@ -13,8 +13,8 @@ export interface SensorProps {
   timestamp: string
 }
 
-const TempAndCO2WebSocketURL = "ws://localhost:8080/ws/sensor";
-const HumidityAndLightWebSocketURL = "ws://localhost:8083/ws";
+const TempAndCO2WebSocketURL = "wss://java-sensor-microservice.onrender.com/ws/sensor";
+const HumidityAndLightWebSocketURL = "wss://go-sensor-microservice-production.up.railway.app/ws";
 
 function App() {
   const [socket, setSocket] = useState<WebSocket | null>(null);
