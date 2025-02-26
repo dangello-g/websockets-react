@@ -6,8 +6,5 @@ A React-based application that demonstrates real-time communication using WebSoc
 
 - Real-Time Dashboard: establishes a persistent connection with WebSocket servers to receive data instantly.
 - WebSocket Reconnection: automatic reconnection logic to ensure a seamless user experience in case of connection failures. This will help maintain real-time updates even when network disruptions occur.
-
-## Planned Features
-
 - User-Friendly Interface: Provides an intuitive UI for users to interact with the WebSocket servers, including sending messages and viewing responses.
 - Error Handling Improvements: Enhance error handling mechanisms to provide clear feedback to users when the WebSocket connection fails, including UI notifications and retry options.

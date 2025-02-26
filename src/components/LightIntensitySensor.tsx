@@ -6,7 +6,7 @@ import { SensorProps } from "../types/sensors";
 
 export default function LightIntensitySensor({ value, timestamp, onThresholdAlert }: SensorProps) {
     const [data, setData] = useState<{ value: number, time: string }[]>([]);
-    const threshold = 1100;
+    const threshold = 1000;
 
     useEffect(() => {
         setData((prevData) => [...prevData, { value, time: new Date(timestamp).toLocaleTimeString() }].slice(-10));
