@@ -1,15 +1,20 @@
-import { Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import { Thermometer } from "lucide-react"
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useEffect, useState } from "react";
-import { SensorProps } from "../App";
+import { SensorProps } from "../types/sensors";
 
-export default function TemperatureSensor({ value, timestamp }: SensorProps) {
+export default function TemperatureSensor({ value, timestamp, onThresholdAlert }: SensorProps) {
     const [data, setData] = useState<{ value: number, time: string }[]>([]);
+    const threshold = 50;
 
     useEffect(() => {
         setData((prevData) => [...prevData, { value, time: new Date(timestamp).toLocaleTimeString() }].slice(-10));
     }, [value, timestamp]);
+
+    const handleThresholdAlert = () => {
+        onThresholdAlert(value);
+    };
 
     return (
         <>
@@ -32,6 +37,7 @@ export default function TemperatureSensor({ value, timestamp }: SensorProps) {
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
+                    <Button className="mt-4 w-100" onClick={handleThresholdAlert} disabled={value <= threshold}>{value > threshold ? `Alert: High Temperature at ${new Date(timestamp).toLocaleTimeString()}` : `Threshold: ${threshold}`}</Button>
                 </Card.Body>
             </Card>
 
