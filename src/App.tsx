@@ -25,7 +25,7 @@ function App() {
   const [infoMessage, setInfoMessage] = useState<string | null>(null)
   const [, setReconnectAttempts1] = useState(0)
   const [, setReconnectAttempts2] = useState(0)
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const connectWebSocket = useCallback(
     (
