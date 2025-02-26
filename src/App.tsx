@@ -1,6 +1,5 @@
 
 import { useEffect, useCallback, useState } from 'react'
-import { AlertCircle } from "lucide-react"
 import { Container, Row, Col, Alert, Button, Spinner } from 'react-bootstrap'
 import TemperatureSensor from './components/TemperatureSensor'
 import CO2Sensor from './components/CO2Sensor'
