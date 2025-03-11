@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import { useEffect, useState } from "react";
 import { SensorProps } from "../types/sensors";
+import { useTheme } from "@/components/ThemeProvider";
 
 export default function LightIntensitySensor({
   value,
@@ -20,6 +21,7 @@ export default function LightIntensitySensor({
 }: SensorProps) {
   const [data, setData] = useState<{ value: number; time: string }[]>([]);
   const threshold = 1000;
+  const { theme } = useTheme();
 
   useEffect(() => {
     setData((prevData) =>
@@ -44,12 +46,16 @@ export default function LightIntensitySensor({
         <CardContent>
           <div className="text-3xl">{value.toFixed(0)} lux</div>
           <p className="text-gray-500 text-xs">Last 10 readings</p>
-          <div className="h-40">
+          <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
                 <CartesianGrid strokeDasharray="5 5" />
-                <XAxis dataKey="time" />
-                <YAxis />
+                <XAxis
+                  dataKey="time"
+                  stroke={theme === "dark" ? "#fff" : "#333"}
+                />
+                <YAxis stroke={theme === "dark" ? "#fff" : "#333"} />
+
                 <Tooltip />
                 <Line
                   type="monotone"
