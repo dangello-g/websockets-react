@@ -36,15 +36,15 @@ export default function TemperatureSensor({
 
   return (
     <>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
+      <Card className="h-96">
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Temperature</CardTitle>
           <Thermometer />
         </CardHeader>
         <CardContent>
-          <div className="text-4xl">{value.toFixed(2)}°C</div>
+          <div className="text-3xl">{value.toFixed(2)}°C</div>
           <p className="text-gray-500 text-xs">Last 10 readings</p>
-          <div className="h-[200px]">
+          <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />

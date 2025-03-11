@@ -36,15 +36,15 @@ export default function HumiditySensor({
 
   return (
     <>
-      <Card>
+      <Card className="h-96">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle>Humidity</CardTitle>
           <Droplets />
         </CardHeader>
         <CardContent>
-          <div className="text-4xl">{value.toFixed(2)} %</div>
+          <div className="text-3xl">{value.toFixed(2)} %</div>
           <p className="text-gray-500 text-xs">Last 10 readings</p>
-          <div className="h-[200px]">
+          <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
                 <CartesianGrid strokeDasharray="5 5" />

@@ -7,6 +7,7 @@ import type { SensorData, SensorProps } from "./types/sensors";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CircleAlert, TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import NavBar from "@/components/NavBar";
 
 const TEMPCO2_WEBSOCKET_URL =
   "wss://java-sensor-microservice.onrender.com/ws/sensor";
@@ -217,43 +218,27 @@ function App() {
   };
 
   return (
-    <div className="container mx-auto p-4 space-y-6">
-      <div className="w-full flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <a
-          className="w-10 h-10"
-          href="https://github.com/dangello-g/websockets-react"
-          target="_blank"
-        >
-          <img
-            src="https://raw.githubusercontent.com/devicons/devicon/refs/heads/master/icons/github/github-original.svg"
-            alt="Github"
-            height="40"
-          />
-        </a>
-      </div>
+    <div className="container w-11/12 mx-auto p-4 space-y-4">
+      <NavBar />
 
       {infoMessage && (
-        <Alert className="flex items-center" role="alert">
+        <Alert>
           <TriangleAlert className="h-4 w-4" />
           <AlertTitle>Info</AlertTitle>
           <AlertDescription>{infoMessage}</AlertDescription>
         </Alert>
       )}
       {errorMessage && (
-        <Alert variant="destructive" className="flex items-center" role="alert">
+        <Alert variant="destructive">
           <CircleAlert className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>{errorMessage}</AlertDescription>
         </Alert>
       )}
-      <div className="flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-center">
-        <div></div>
+      <div className="flex flex-col space-y-4 sm:flex-row sm:justify-end sm:items-center">
         <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
-          <div className="flex items-center justify-between space-x-2">
-            <span className="font-medium">
-              Temperature/CO2: {connectionStatus1}
-            </span>
+          <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
+            <span>Temperature/CO2: {connectionStatus1}</span>
             <Button
               onClick={() =>
                 handleManualReconnect(
@@ -270,26 +255,22 @@ function App() {
               Reconnect
             </Button>
 
-            <div className="flex items-center justify-between space-x-2">
-              <span className="font-medium">
-                Humidity/Light: {connectionStatus2}
-              </span>
-              <Button
-                onClick={() =>
-                  handleManualReconnect(
-                    HUMLIGHT_WEBSOCKET_URL,
-                    setHumLightSensor,
-                    setConnectionStatus2,
-                    setReconnectAttempts2,
-                    humLightSocketRef
-                  )
-                }
-                disabled={connectionStatus2 === "connected"}
-                size="sm"
-              >
-                Reconnect
-              </Button>
-            </div>
+            <span>Humidity/Light: {connectionStatus2}</span>
+            <Button
+              onClick={() =>
+                handleManualReconnect(
+                  HUMLIGHT_WEBSOCKET_URL,
+                  setHumLightSensor,
+                  setConnectionStatus2,
+                  setReconnectAttempts2,
+                  humLightSocketRef
+                )
+              }
+              disabled={connectionStatus2 === "connected"}
+              size="sm"
+            >
+              Reconnect
+            </Button>
           </div>
         </div>
       </div>
