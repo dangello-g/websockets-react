@@ -51,7 +51,12 @@ export default function LightIntensitySensor({
                 <XAxis dataKey="time" />
                 <YAxis />
                 <Tooltip />
-                <Line dataKey="value" stroke="#ff7300" activeDot={{ r: 5 }} />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#fa8c16"
+                  activeDot={{ r: 5 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>

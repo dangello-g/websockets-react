@@ -8,6 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CircleAlert, TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const TEMPCO2_WEBSOCKET_URL =
   "wss://java-sensor-microservice.onrender.com/ws/sensor";
@@ -218,83 +219,87 @@ function App() {
   };
 
   return (
-    <div className="container w-11/12 mx-auto p-4 space-y-4">
-      <NavBar />
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <div className="container w-11/12 mx-auto p-4 space-y-4">
+        <NavBar />
 
-      {infoMessage && (
-        <Alert>
-          <TriangleAlert className="h-4 w-4" />
-          <AlertTitle>Info</AlertTitle>
-          <AlertDescription>{infoMessage}</AlertDescription>
-        </Alert>
-      )}
-      {errorMessage && (
-        <Alert variant="destructive">
-          <CircleAlert className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{errorMessage}</AlertDescription>
-        </Alert>
-      )}
-      <div className="flex flex-col space-y-4 sm:flex-row sm:justify-end sm:items-center">
-        <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
-          <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
-            <span>Temperature/CO2: {connectionStatus1}</span>
-            <Button
-              onClick={() =>
-                handleManualReconnect(
-                  TEMPCO2_WEBSOCKET_URL,
-                  setTempCo2Sensor,
-                  setConnectionStatus1,
-                  setReconnectAttempts1,
-                  tempCo2SocketRef
-                )
-              }
-              disabled={connectionStatus1 === "connected"}
-              size="sm"
-            >
-              Reconnect
-            </Button>
+        {infoMessage && (
+          <Alert>
+            <TriangleAlert className="h-4 w-4" />
+            <AlertTitle>Info</AlertTitle>
+            <AlertDescription>{infoMessage}</AlertDescription>
+          </Alert>
+        )}
+        {errorMessage && (
+          <Alert variant="destructive">
+            <CircleAlert className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
+        <div className="flex flex-col space-y-4 sm:flex-row sm:justify-end sm:items-center">
+          <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
+              <span>Temperature/CO2: {connectionStatus1}</span>
+              <Button
+                onClick={() =>
+                  handleManualReconnect(
+                    TEMPCO2_WEBSOCKET_URL,
+                    setTempCo2Sensor,
+                    setConnectionStatus1,
+                    setReconnectAttempts1,
+                    tempCo2SocketRef
+                  )
+                }
+                disabled={connectionStatus1 === "connected"}
+                size="sm"
+              >
+                Reconnect
+              </Button>
 
-            <span>Humidity/Light: {connectionStatus2}</span>
-            <Button
-              onClick={() =>
-                handleManualReconnect(
-                  HUMLIGHT_WEBSOCKET_URL,
-                  setHumLightSensor,
-                  setConnectionStatus2,
-                  setReconnectAttempts2,
-                  humLightSocketRef
-                )
-              }
-              disabled={connectionStatus2 === "connected"}
-              size="sm"
-            >
-              Reconnect
-            </Button>
+              <span>Humidity/Light: {connectionStatus2}</span>
+              <Button
+                onClick={() =>
+                  handleManualReconnect(
+                    HUMLIGHT_WEBSOCKET_URL,
+                    setHumLightSensor,
+                    setConnectionStatus2,
+                    setReconnectAttempts2,
+                    humLightSocketRef
+                  )
+                }
+                disabled={connectionStatus2 === "connected"}
+                size="sm"
+              >
+                Reconnect
+              </Button>
+            </div>
           </div>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <TemperatureSensor
+            {...getLatestValueByType("temperature")}
+            onThresholdAlert={(value) =>
+              handleThresholdAlert("temperature", value)
+            }
+          />
+          <HumiditySensor
+            {...getLatestValueByType("humidity")}
+            onThresholdAlert={(value) =>
+              handleThresholdAlert("humidity", value)
+            }
+          />
+          <CO2Sensor
+            {...getLatestValueByType("co2")}
+            onThresholdAlert={(value) => handleThresholdAlert("co2", value)}
+          />
+          <LightIntensitySensor
+            {...getLatestValueByType("light")}
+            onThresholdAlert={(value) => handleThresholdAlert("light", value)}
+          />
+        </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <TemperatureSensor
-          {...getLatestValueByType("temperature")}
-          onThresholdAlert={(value) =>
-            handleThresholdAlert("temperature", value)
-          }
-        />
-        <HumiditySensor
-          {...getLatestValueByType("humidity")}
-          onThresholdAlert={(value) => handleThresholdAlert("humidity", value)}
-        />
-        <CO2Sensor
-          {...getLatestValueByType("co2")}
-          onThresholdAlert={(value) => handleThresholdAlert("co2", value)}
-        />
-        <LightIntensitySensor
-          {...getLatestValueByType("light")}
-          onThresholdAlert={(value) => handleThresholdAlert("light", value)}
-        />
-      </div>
-    </div>
+    </ThemeProvider>
   );
 }
 

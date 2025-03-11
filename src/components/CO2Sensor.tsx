@@ -51,7 +51,12 @@ export default function CO2Sensor({
                 <XAxis dataKey="time" />
                 <YAxis domain={[400, 1000]} />
                 <Tooltip />
-                <Line dataKey="value" stroke="#ffc658" activeDot={{ r: 5 }} />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#7b68ee"
+                  activeDot={{ r: 5 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>

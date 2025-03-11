@@ -51,7 +51,12 @@ export default function HumiditySensor({
                 <XAxis dataKey="time" />
                 <YAxis />
                 <Tooltip />
-                <Line dataKey="value" stroke="#82ca9d" activeDot={{ r: 5 }} />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#5cb85c"
+                  activeDot={{ r: 5 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
